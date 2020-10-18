@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="layout/layout :: head"></head>
+
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+
+	<div class="container">
+		<h1 th:text="${titulo}"
+			class="text-primary border border-success border-top-0 border-left-0 border-right-0"></h1>
+		<p>
+			<a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-success btn-xs" th:href="@{/form}">Crear
+				Cliente</a>
+		</p>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>nº</th>
+					<th>nombre</th>
+					<th>apellido</th>
+					<th sec:authorize="hasRole('ROLE_ADMIN')">editar</th>
+					<th sec:authorize="hasRole('ROLE_ADMIN')">eliminar</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cliente, iter: ${clientes}">
+					<td th:text="${iter.index + 1}"></td>
+					<td th:text="${cliente.nombre}"></td>
+					<td th:text="${cliente.apellido}"></td>
+					<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-primary btn-xs"
+						th:href="@{/form/} + ${cliente.id}" th:text="editar"></a></td>
+					<td sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-danger btn-xs"
+						th:href="@{/eliminar/} + ${cliente.id}" th:text="eliminar" onclick="return confirm('Estas seguro que quieres eliminar?');"></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+<footer th:replace="layout/layout :: footer"></footer>
+
+</body>
+</html>
